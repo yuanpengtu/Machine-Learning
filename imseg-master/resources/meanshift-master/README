@@ -1,0 +1,58 @@
+IMPLEMENTATION OF MEAN SHIFT IMAGE SEGMENTATION IN PYTHON
+Author(s): Pranshu Gupta, Abhishek Jain
+INDIAN INSTITUTE OF TECHNOLOGY KANPUR
+===================================================================================================
+
+The description of our implementation is as follows:
+---------------------------------------------------------------------------------------------------
+We load the image using the 'Image' module of python. It gives us a matrix of RGB values. 
+The shape of this matrix is same as the resolution of the image.
+We pick one initial seed for mean shift filtering at every 40th pixel in height and width. Then we 
+run the mean shift algorithm serially for each of these seeds. We iterate atmost 10 times at each 
+seed for it to converge, otherwise we move on to the next seed.
+We have implemented Flat and Gaussian Kernel for Mean Shift Algorithm, the user has to choose one 
+them at the run time by supplying a command line argument. (0 for flat and 1 for gaussian)
+After we get the converged seeds, we group together the seeds which are closer than the bandwidth. 
+We do this by taking their average vector.
+Then we find out the nearest seed for each of the pixels in the image and assign new RGB values 
+to get the segmented image.
+
+Running the Application
+---------------------------------------------------------------------------------------------------
+$ python segment.py bandwidth_value is_kernel_gaussian
+[here is_kernel_guassian should be 0 if flat kernel is to be used otherwise it should be 1]
+
+RESULTS (FLAT KERNEL) - #MEANS VERSUS BANDWIDTH
+***************************************************************************************************
+IMG/BW			|   10   |   20   |   30   |   40   |   50   |   60   |   80   |	
+---------------------------------------------------------------------------------------------------
+input1			|   93   |   73   |   66   |   62   |   61   |   60   |   61   |
+input2			|   80   |   66   |   63   |   61   |   58   |   59   |   59   |
+input3			|   95   |   75   |   65   |   57   |   56   |   55   |   52   |
+input4			|   89   |   70   |   62   |   59   |   60   |   55   |   52   |
+input5			|   87   |   68   |   63   |   60   |   61   |   62   |   59   |
+
+
+RESULTS (GAUSSIAN KERNEL) - #MEANS VERSUS BANDWIDTH
+***************************************************************************************************
+IMG/BW			|   10   |   20   |   30   |   40   |   50   |   60   |   80   |	
+---------------------------------------------------------------------------------------------------
+input1			|   97   |   74   |   66   |   64   |   64   |   61   |   59   |
+input2			|   80   |   69   |   61   |   61   |   60   |   59   |   57   |
+input3			|  101   |   72   |   63   |   61   |   58   |   56   |   57   |
+input4			|   95   |   70   |   65   |   61   |   61   |   59   |   55   |
+input5			|   94   |   69   |   61   |   61   |   61   |   60   |   60   |
+
+INFERENCES
+---------------------------------------------------------------------------------------------------
+By plotting the number of converged means vs. Bandwidth for segmentation with flat kernel, we see 
+that the elbow of most of the curves is located at bandwidth = 40. So, we say that this value of bandwidth 
+should be used.
+Similarly, in plots for segmentation with the gaussian kernel, we have the elbows located near bandwidth = 30.
+So, we say that 30 is the good value of bandwidth.
+
+If we keep on inceasing the bandwidth, we will lose useful information. This can be seen easily in segmentation 
+result for the image 'input5.jpg', wherein the soldiers and trees all appear to be mixed up.  
+
+
+===================================================================================================
